@@ -27,7 +27,7 @@ body {
   background: var(--bg1);
   color: var(--text);
   overflow: hidden;
-  height: 100vh;
+  height: var(--app-100vh, 100vh);
   display: flex;
   flex-direction: column;
 }
@@ -379,7 +379,7 @@ body {
    removed from this page's UI to match the original exactly, per
    Hasib's "no exception" instruction -- concurrency now runs at a
    fixed default in the backend instead of being user-exposed here. ---- */
-.embed-page { display: grid; grid-template-columns: 1fr 340px; gap: 14px; height: calc(100vh - 52px - 28px); align-items: stretch; }
+.embed-page { display: grid; grid-template-columns: 1fr 340px; gap: 14px; height: calc(var(--app-100vh, 100vh) - 52px - 28px); align-items: stretch; }
 .embed-panel-col { min-height: 0; overflow-y: auto; }
 .embed-panel { padding: 20px; }
 .embed-step + .embed-step { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
@@ -549,7 +549,7 @@ body {
 .control-panel {
   width: 270px; flex-shrink: 0; background: var(--bg2); border: 1px solid var(--border);
   border-radius: 10px; padding: 14px; position: sticky; top: 14px;
-  height: calc(100vh - 52px - 28px - 14px);
+  height: calc(var(--app-100vh, 100vh) - 52px - 28px - 14px);
   display: flex; flex-direction: column;
   transition: width 200ms var(--ease), padding 200ms var(--ease), opacity 150ms var(--ease);
 }
