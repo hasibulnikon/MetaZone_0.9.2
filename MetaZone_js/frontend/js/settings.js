@@ -74,6 +74,7 @@ function renderProvider() {
     if (!res.ok) { status.textContent = res.error || 'Could not save.'; return; }
     input.value = ''; status.textContent = '';
     loadProviders();
+    document.dispatchEvent(new CustomEvent('keys-changed'));
   };
 
   // Live validation on blur -- informational only, never blocks Save
@@ -89,9 +90,11 @@ function renderProvider() {
 
   document.getElementById('btnActivateAll').onclick = async () => {
     await pywebview.api.set_all_keys_active(p.provider, true); loadProviders();
+    document.dispatchEvent(new CustomEvent('keys-changed'));
   };
   document.getElementById('btnDeactivateAll').onclick = async () => {
     await pywebview.api.set_all_keys_active(p.provider, false); loadProviders();
+    document.dispatchEvent(new CustomEvent('keys-changed'));
   };
 
   apiKeyList.innerHTML = '';
@@ -126,11 +129,13 @@ function renderProvider() {
     toggleBtn.addEventListener('click', async () => {
       await pywebview.api.set_key_active(p.provider, idx, !k.active);
       loadProviders();
+      document.dispatchEvent(new CustomEvent('keys-changed'));
     });
 
     card.querySelector('.key-delete-btn').addEventListener('click', async () => {
       await pywebview.api.delete_api_key(p.provider, idx);
       loadProviders();
+      document.dispatchEvent(new CustomEvent('keys-changed'));
     });
 
     apiKeyList.appendChild(card);
