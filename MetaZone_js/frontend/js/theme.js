@@ -22,6 +22,12 @@ const THEME_PALETTES = {
     '--text': '#e7e9ee',
     '--text-dim': '#9aa0ac',
     '--border': '#2e323b',
+    // .btn's hover state (base.css) used to be hardcoded to these same
+    // two values regardless of theme -- fine here since dark text on
+    // this dark hover already reads correctly, but that's what made
+    // the same hardcoded values break the light theme (see below).
+    '--btn-hover-bg': '#2a2d35',
+    '--btn-hover-border': '#3a3f4a',
   },
   light: {
     '--bg1': '#ffffff',
@@ -30,6 +36,14 @@ const THEME_PALETTES = {
     '--text': '#1b1d22',
     '--text-dim': '#6a6f7b',
     '--border': '#dfe1e6',
+    // Bug fix: .btn:hover previously used dark theme's hover color
+    // (#2a2d35) unconditionally -- on a white .btn (bg: var(--bg1))
+    // with dark theme's dark text (var(--text): #1b1d22) still applied
+    // on top, hovering turned the button dark-on-dark, effectively
+    // invisible. A light, theme-appropriate hover keeps the dark text
+    // readable instead.
+    '--btn-hover-bg': '#e6e8ec',
+    '--btn-hover-border': '#c7cbd3',
   },
 };
 
