@@ -360,11 +360,15 @@ async function refreshKeySummaryPrompt() {
     <div class="key-summary-item"><strong>${res.provider_count}</strong>Providers</div>`;
 }
 document.getElementById('btnCheckKeysPrompt').addEventListener('click', async () => {
+  await refreshKeySummaryPrompt();
   const res = await pywebview.api.get_active_keys_summary();
   statusTextPrompt.textContent = res.active_count
     ? `Active keys: ${res.active_count} (${res.providers.join(', ')})`
     : 'No active API keys configured — open Settings.';
 });
+// See app.js's identical comment -- same real-time refresh fix,
+// mirrored here since this page has its own separate key summary box.
+document.addEventListener('keys-changed', refreshKeySummaryPrompt);
 
 let promptStylesCache = {};
 async function loadPromptOptions() {
