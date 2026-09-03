@@ -185,7 +185,7 @@ body {
     border-color 150ms var(--ease), box-shadow 150ms var(--ease);
 }
 
-.btn:hover { background: #2a2d35; border-color: #3a3f4a; }
+.btn:hover { background: var(--btn-hover-bg, #2a2d35); border-color: var(--btn-hover-border, #3a3f4a); }
 .btn:active { transform: scale(0.97); transition-duration: 80ms; }
 
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -592,6 +592,15 @@ body {
 }
 .key-summary strong { display: block; color: var(--accent); font-size: 14px; font-weight: 700; }
 .key-summary-item { flex: 1; text-align: center; }
+
+/* Whole "🔑 API INFO" box acts as a button to the API Manager page
+   (see nav.js) -- the "Check" button inside it keeps its own
+   click behavior via stopPropagation, so only clicks on the rest of
+   the box navigate. Hover feedback on .key-summary (the bordered
+   part) makes it read as clickable without changing the label row. */
+.api-info-box { cursor: pointer; border-radius: 8px; }
+.api-info-box:hover .key-summary { border-color: var(--accent); background: rgba(91, 140, 255, 0.05); }
+.api-info-box:active .key-summary { transform: scale(0.99); }
 .control-slider-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin: 10px 0 4px; }
 .control-val { color: var(--accent); font-weight: 600; }
 .range-input { width: 100%; accent-color: var(--accent); }
