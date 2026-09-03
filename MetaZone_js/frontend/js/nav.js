@@ -62,3 +62,14 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 document.querySelectorAll('.quick-btn').forEach(btn => {
   btn.addEventListener('click', () => goToPage(btn.dataset.page));
 });
+
+// "🔑 API INFO" box (Meta Generator + Image-to-Prompt control panels)
+// acts as a button to the API Manager page -- same [data-page] pattern
+// as above. The box's own "Check" button keeps its existing behavior
+// (checking keys in place) rather than also navigating away, so its
+// click is stopped from bubbling up to the box's own listener.
+document.querySelectorAll('.api-info-box').forEach(box => {
+  box.addEventListener('click', () => goToPage(box.dataset.page));
+  const checkBtn = box.querySelector('.key-check-link');
+  if (checkBtn) checkBtn.addEventListener('click', e => e.stopPropagation());
+});
