@@ -39,6 +39,17 @@ function goToPage(target) {
       sec.hidden = true;
     }
   });
+
+  // Safety net for the "🔑 API INFO" box's real-time refresh (see the
+  // 'keys-changed' listeners in app.js/promptgen.js): those cover
+  // edits made in Settings within this same window, but the API
+  // Manager popup (bridge.py's open_api_manager_popup) is a *separate*
+  // pywebview window with its own DOM -- it can't dispatch a DOM event
+  // this window would ever see. Refreshing on every visit to these
+  // pages catches that case too, typeof-guarded since these functions
+  // only exist once app.js/promptgen.js have loaded.
+  if (target === 'meta' && typeof refreshKeySummary === 'function') refreshKeySummary();
+  if (target === 'prompt' && typeof refreshKeySummaryPrompt === 'function') refreshKeySummaryPrompt();
 }
 
 // Popup mode: a real secondary pywebview window (see
