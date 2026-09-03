@@ -57,6 +57,23 @@
 
     var scale = Math.min(w / DESIGN_WIDTH, h / DESIGN_HEIGHT);
     scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale));
+
+    // Real bug this fixes: `100vh` does NOT automatically compensate
+    // for a `zoom` applied higher up the tree (that was this file's
+    // original, incorrect assumption) -- `vh` always resolves against
+    // the actual physical window, not the zoomed one. So body's own
+    // `height: 100vh` (and the couple of `calc(100vh - ...)` rules
+    // elsewhere in base.css) sized themselves correctly in real
+    // pixels, and THEN got visually shrunk again by zoom on top of
+    // that -- the whole app (sidebar included, since it's a flex
+    // sibling inside that same shrunk box) rendered smaller than the
+    // actual window, leaving real, unstyled dead space below
+    // everything rather than just some page's content running short.
+    // Fix: expose the *already-scale-compensated* height/width as CSS
+    // vars, and base.css uses those instead of raw vh/vw so nothing
+    // gets shrunk twice.
+    root.style.setProperty('--app-100vh', (h / scale) + 'px');
+    root.style.setProperty('--app-100vw', (w / scale) + 'px');
     root.style.zoom = String(scale);
   }
 
@@ -66,6 +83,24 @@
   // ever unreliable in a given environment -- cheap, and a no-op if
   // the number hasn't changed.
   document.addEventListener('DOMContentLoaded', applyScale);
+
+  // Bug fix: on smaller/720p-class windows, pywebview's native window
+  // is sometimes still mid-resize (settling into the smaller
+  // win_w/win_h app.py requested) at the moment this script's very
+  // first measurement runs -- window.innerWidth/innerHeight at that
+  // instant can briefly report the *pre-resize* (larger, default)
+  // size. That produces a scale that's too large for the window's
+  // real final size, and because nothing after the initial paint was
+  // guaranteed to trigger another 'resize' event on every platform,
+  // the wrong (too-large) scale could stick: the UI renders as if the
+  // effective viewport were taller than it really is, so content ends
+  // before the real bottom edge of the window and everything below it
+  // reads as empty space. These extra re-checks after load settles
+  // catch and correct that -- cheap no-ops (applyScale resets to zoom:1
+  // and recomputes) if the first measurement was already right.
+  window.addEventListener('load', applyScale);
+  setTimeout(applyScale, 200);
+  setTimeout(applyScale, 600);
 
   // Debounced: a window drag-resize fires this rapidly; only rescale
   // once movement settles rather than on every intermediate frame.
