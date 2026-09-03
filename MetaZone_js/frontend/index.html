@@ -66,8 +66,10 @@
         <aside class="control-panel" id="controlPanel">
           <button id="btnCollapsePanel" class="panel-collapse-btn" title="Hide panel">◀</button>
           <div class="control-panel-inner">          <div class="control-label">CONTROL PANEL</div>
-          <div class="key-summary-header key-summary-header-row">🔑 API INFO <button id="btnCheckKeys" class="link-btn key-check-link">Check</button></div>
-          <div id="keySummary" class="key-summary">Checking keys…</div>
+          <div class="api-info-box" data-page="settings" title="Open API Manager">
+            <div class="key-summary-header key-summary-header-row">🔑 API INFO <button id="btnCheckKeys" class="link-btn key-check-link">Check</button></div>
+            <div id="keySummary" class="key-summary">Checking keys…</div>
+          </div>
 
           <div class="control-slider-row">
             <span>Concurrent Generations</span><span id="concurrencyVal" class="control-val">10x</span>
@@ -166,8 +168,10 @@
           <button id="btnCollapsePanelPrompt" class="panel-collapse-btn" title="Hide panel">◀</button>
           <div class="control-panel-inner">
           <div class="control-label">CONTROL PANEL</div>
-          <div class="key-summary-header key-summary-header-row">🔑 API INFO <button id="btnCheckKeysPrompt" class="link-btn key-check-link">Check</button></div>
-          <div id="keySummaryPrompt" class="key-summary">Checking keys…</div>
+          <div class="api-info-box" data-page="settings" title="Open API Manager">
+            <div class="key-summary-header key-summary-header-row">🔑 API INFO <button id="btnCheckKeysPrompt" class="link-btn key-check-link">Check</button></div>
+            <div id="keySummaryPrompt" class="key-summary">Checking keys…</div>
+          </div>
 
           <div class="control-slider-row">
             <span>Concurrent Generations</span><span id="concurrencyValPrompt" class="control-val">10x</span>
