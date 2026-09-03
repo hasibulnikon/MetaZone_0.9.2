@@ -513,6 +513,17 @@ onPywebviewReady(() => {
   loadAutoDownloadCsvPref();
 });
 
+// Real bug fix: refreshKeySummary() previously only ran once, at
+// initial page load -- so adding/deleting/activating/deactivating
+// keys over in Settings (or the "Check" button above, before this
+// fix) never touched this box again, leaving stale Active/Stored/
+// Providers counts no matter what actually changed. settings.js
+// dispatches this event on every key mutation; nav.js also calls
+// refreshKeySummary() directly whenever this page becomes visible, as
+// a second safety net (e.g. keys changed via the separate API Manager
+// popup window, which doesn't share this page's DOM/events at all).
+document.addEventListener('keys-changed', refreshKeySummary);
+
 // v0.8.4: Concurrent Generations defaults to 10 on a fresh install
 // (no prefs.json entry yet), then remembers whatever the user last set
 // it to via the same real get_prefs/save_prefs merge bridge Settings
@@ -587,6 +598,7 @@ document.getElementById('btnStop').addEventListener('click', async () => {
 });
 
 document.getElementById('btnCheckKeys').addEventListener('click', async () => {
+  await refreshKeySummary();
   const res = await pywebview.api.get_active_keys_summary();
   statusText.textContent = res.active_count
     ? `Active keys: ${res.active_count} (${res.providers.join(', ')})`
